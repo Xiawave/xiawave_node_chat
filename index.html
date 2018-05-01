@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="socket.io"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login form --> 
+    <div class="login_container">
+                <div class="change_log_type">
+                    <div class="change_login">BELÉPÉS</div><div class="change_login">REGISZTRÁCIÓ</div>
+                </div>
+                <div class="login_form">
+                    <label for="username_input">Felhasználónév</label>
+                    <input id="username_input" type="text" placeholder="Felhasználónév">
+                    <label for="password_input">Jelszó</label>
+                    <input id="password_input" type="password" placeholder="Jelszó">
+                    <input type="button" value="Belépés">
+                    <label class="form_message_label"></label>
+                    <div class="save_password_form">
+                        <label> Szeretnéd elmenteni a bejelentkezési adatokat? </label>
+                        <div class="answer_btns">
+                            <button>IGEN</button>
+                            <button>NEM</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration_form">
+                    <label for="username_to_reg">Felhasználónév</label>
+                    <input id="username_to_reg" type="text" placeholder="Felhasználónév">
+                    <label for="password_to_reg">Jelszó</label>
+                    <input id="password_to_reg" type="password" placeholder="Jelszó">
+                    <label for="password_to_reg_again">Jelszó</label>
+                    <input id="password_to_reg_again" type="password" placeholder="Jelszó">
+                    <input type="button" value="Regisztráció">
+                    <label class="reg_message_label"></label>
+                </div>
+        </div>
+    </div>
+    <div class="chat_container">
+        <!-- Show Selected Menu -->
+        <div class="menu_bar">
+            <div class="selected_menu"></div>
+        </div>
+        <!-- Show Selected Menu End -->
+        <div class="chat_parent">
+            <div class="chat"></div>
+        </div>
+        <!-- Menu -->
+        <div class="menu_parent">
+                <div class="menu_item"> <img src="user.png"></div>
+                <div class="menu_item"> <img src="users.png"></div>
+                <div class="menu_item"> <img src="files.png"></div>
+                <div class="menu_item"> <img src="editor.png"></div>
+                <div class="menu_item"> <img src="alarm.png"></div>
+        </div>
+        <!-- Menu End -->
+        <div class="chat_inputs">
+            <input id="text" type="text" autocomplete="off" placeholder="Írjon üzenetet...">
+            <button id="send"> Küldés </button>
+        </div>   
+    </div>
+    <div class="black_fixed_editor black_bg">
+        <textarea class="online_text_editor">
+        </textarea>
+    </div>
+    <div class="black_online_users black_bg">
+        <div class="online_users">
+            
+        </div>
+    </div>
+    <!-- File Manager Beginning -->
+    <div class="black_fixed_files black_bg">
+        <label class="file_manager_dir_location"></label>
+        <div class="panel_file_manager">
+            <div class="panel_file_menu">
+                <img class="menu_img" src="/file_manager_images/adddir.png">
+                <img class="menu_img" src="/file_manager_images/removedir.png">
+                <img class="menu_img" src="/file_manager_images/addfile.png">
+                <img class="menu_img" src="/file_manager_images/deletefile.png">
+                <img class="menu_img" src="/file_manager_images/folder_back.png">
+                <div class="file_manager_uploader file_manager_upper_class">
+                    <img src="/upload.png" alt="">
+                    <input type="file" name="new_file" accept=".jpg, .jpeg, .png, .zip, .txt, .rar, .doc, .xls, .ppt, .sql">
+                    <label> Fájl neve: </label>
+                    <input type="text" name="file_name" value="">
+                    <img class="upload_btn" src="/upload_btn.png">
+                    <img src="/back.png" alt="">
+                </div>
+                <div class="file_manager_deleter file_manager_upper_class">
+                    <label> Biztos vagy benne, hogy törölni akarsz {0} fájlt? </label>
+                    <img src="file_manager_images/vfile.png">
+                    <img src="file_manager_images/xfile.png">
+                </div>
+                <div class="file_manager_adddir file_manager_upper_class">
+                    <label> Könyvtár Neve: </label>
+                    <input type="text">
+                    <img src="file_manager_images/vfolder.png">
+                    <img src="file_manager_images/xfolder.png">
+                </div>
+                <div class="file_manager_deldir file_manager_upper_class">
+                    <label> Biztos vagy benne, hogy törölni akarsz {0} könyvtárat, benne minden tartalommal? </label>
+                    <img src="file_manager_images/vfolder.png">
+                    <img src="file_manager_images/xfolder.png">
+                </div>
+            </div>
+            <div class="file_manager_files">
+            </div>
+            <div class="file_manager_helper">
+                <div class="blur_bg">akarmi</div>
+            </div> 
+        </div>
+    </div>
+    <!-- File Manager Ending -->
+    <div class="black_fixed_my_profile black_bg">
+        <div class="profile"> 
+            <div class="profilehead">
+                <img/>
+                <input type="file" name="profile_picture" accept=".jpg, .jpeg">
+            </div>
+            <label class="username"></label>
+            <form action="" id="passw_form" method="POST">
+            <div class="setpassword">
+                <input type="password" name="old_psw"> 
+                <div class="input_helper"> Előző Jelszó </div>          
+            </div>
+            <div class="setpassword">
+                <input type="password" name="new_psw">
+                <div class="input_helper"> Új Jelszó </div>
+            </div>
+            <div class="setpassword">
+                <input type="password" name="new_psw_again">
+                <div class="input_helper"> Új Jelszó Megint</div>      
+            </div>
+            <input type="submit" value="Mentés"> 
+        </form>
+        </div>
+    </div>
+</body>
+<script type="text/template" id="file_template">
+    <div class="onefile">
+        <input type="checkbox">
+        <div class="file_body"> 
+            <img src="server_files/file_icons/{{filetype}}.png"> 
+            <a href="{{src}}"> {{filename}} </a>
+        </div>
+    </div>
+</script>
+<script src="client_files/mustache.js"></script>
+<script src="client_files/client_events.js"></script>
+<script src="client_files/client_functions.js"></script>
+</html>
