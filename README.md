@@ -12,6 +12,6 @@ Some known bugs:
 
 You can launch the app with
 
-...
+```
 node index.js
-...
+```
